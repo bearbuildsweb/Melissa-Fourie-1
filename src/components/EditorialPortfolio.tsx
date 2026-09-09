@@ -1,7 +1,85 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Eye, ArrowUpRight, Sparkles, Layers } from 'lucide-react';
 import { PORTFOLIO_ITEMS, SITE_CONFIG } from '../data/content';
 import { PortfolioItem, CategoryType } from '../types';
+
+interface PortfolioFrameImageProps {
+  src: string;
+  alt: string;
+  plateNumber: '01' | '02';
+}
+
+const PortfolioFrameImage: React.FC<PortfolioFrameImageProps> = ({
+  src,
+  alt,
+  plateNumber,
+}) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    // Check if the image is already cached and loaded by the browser
+    if (imgRef.current && imgRef.current.complete && imgRef.current.naturalWidth > 0) {
+      setIsLoaded(true);
+    }
+  }, [src]);
+
+  return (
+    <div className="relative overflow-hidden aspect-[3/4] sm:aspect-[4/5] bg-[#E3D8CC] rounded-[1px] border border-[#D2C5B5] shadow-[0_1px_3px_rgba(45,22,26,0.08),inset_0_0_0_1px_rgba(255,255,255,0.3)]">
+      {/* Mini-Preloader in the portfolio frame */}
+      <div
+        className={`absolute inset-0 z-10 flex flex-col items-center justify-center bg-gradient-to-b from-[#EFE8DF] via-[#E6DCCF] to-[#DDD2C4] transition-opacity duration-500 ease-out pointer-events-none ${
+          isLoaded ? 'opacity-0' : 'opacity-100'
+        }`}
+        aria-hidden={isLoaded}
+      >
+        {/* Subtle Ambient Shimmer Sweep */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="w-full h-full bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full animate-[shimmer_1.8s_infinite] pointer-events-none" />
+        </div>
+
+        {/* Minimalist Couture Ring Spinner */}
+        <div className="relative flex items-center justify-center">
+          {/* Subtle Outer Track */}
+          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-[#D5C7B7]/80" />
+          {/* Rotating Antique Gold Segment */}
+          <div className="absolute w-7 h-7 sm:w-8 sm:h-8 rounded-full border-t-[1.5px] border-r-[1.5px] border-transparent border-t-[#C29A3A] border-r-[#C29A3A] animate-spin [animation-duration:0.9s]" />
+          {/* Center Subtle Gold Pulse Dot */}
+          <div className="absolute w-1.5 h-1.5 rounded-full bg-[#C29A3A] animate-pulse" />
+        </div>
+
+        {/* Understated Status Label */}
+        <span className="mt-2.5 text-[8px] font-mono tracking-[0.26em] uppercase text-[#7A5F62] font-light">
+          LOOK {plateNumber}
+        </span>
+      </div>
+
+      {/* Mounted Archival Print Image */}
+      <img
+        ref={imgRef}
+        src={src}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        referrerPolicy="no-referrer"
+        onLoad={() => setIsLoaded(true)}
+        onError={() => setIsLoaded(true)}
+        className={`w-full h-full object-cover object-center filter contrast-[1.02] transition-all duration-700 ease-out group-hover:scale-[1.018] ${
+          isLoaded ? 'opacity-100' : 'opacity-0 scale-[0.985]'
+        }`}
+      />
+
+      {/* Archival Folio Plate (01 / 02) */}
+      <div
+        className={`absolute top-2.5 ${
+          plateNumber === '01' ? 'left-2.5' : 'right-2.5'
+        } z-20 bg-[#FAF8F5]/95 backdrop-blur-xs px-2 py-0.5 text-[8.5px] font-mono tracking-[0.22em] text-[#3E2023] border border-[#D5C7B7] shadow-[0_1px_2px_rgba(45,22,26,0.06)]`}
+      >
+        {plateNumber}
+      </div>
+    </div>
+  );
+};
 
 interface EditorialPortfolioProps {
   onSelectLook: (item: PortfolioItem) => void;
@@ -84,36 +162,18 @@ export const EditorialPortfolio: React.FC<EditorialPortfolioProps> = ({
                   {/* Mat board inner beveled diptych aperture */}
                   <div className="grid grid-cols-2 gap-2.5 sm:gap-3.5">
                     {/* Perspective 01: Mounted Archival Print */}
-                    <div className="relative overflow-hidden aspect-[3/4] sm:aspect-[4/5] bg-[#E3D8CC] rounded-[1px] border border-[#D2C5B5] shadow-[0_1px_3px_rgba(45,22,26,0.08),inset_0_0_0_1px_rgba(255,255,255,0.3)]">
-                      <img
-                        src={photo1}
-                        alt={`${item.title} - View 01`}
-                        loading="lazy"
-                        decoding="async"
-                        referrerPolicy="no-referrer"
-                        className="w-full h-full object-cover object-center filter contrast-[1.02] transition-transform duration-700 ease-out group-hover:scale-[1.018]"
-                      />
-                      {/* Archival Folio Plate 01 */}
-                      <div className="absolute top-2.5 left-2.5 bg-[#FAF8F5]/95 backdrop-blur-xs px-2 py-0.5 text-[8.5px] font-mono tracking-[0.22em] text-[#3E2023] border border-[#D5C7B7] shadow-[0_1px_2px_rgba(45,22,26,0.06)]">
-                        01
-                      </div>
-                    </div>
+                    <PortfolioFrameImage
+                      src={photo1}
+                      alt={`${item.title} - View 01`}
+                      plateNumber="01"
+                    />
 
                     {/* Perspective 02: Mounted Archival Print */}
-                    <div className="relative overflow-hidden aspect-[3/4] sm:aspect-[4/5] bg-[#E3D8CC] rounded-[1px] border border-[#D2C5B5] shadow-[0_1px_3px_rgba(45,22,26,0.08),inset_0_0_0_1px_rgba(255,255,255,0.3)]">
-                      <img
-                        src={photo2}
-                        alt={`${item.title} - View 02`}
-                        loading="lazy"
-                        decoding="async"
-                        referrerPolicy="no-referrer"
-                        className="w-full h-full object-cover object-center filter contrast-[1.02] transition-transform duration-700 ease-out group-hover:scale-[1.018]"
-                      />
-                      {/* Archival Folio Plate 02 */}
-                      <div className="absolute top-2.5 right-2.5 bg-[#FAF8F5]/95 backdrop-blur-xs px-2 py-0.5 text-[8.5px] font-mono tracking-[0.22em] text-[#3E2023] border border-[#D5C7B7] shadow-[0_1px_2px_rgba(45,22,26,0.06)]">
-                        02
-                      </div>
-                    </div>
+                    <PortfolioFrameImage
+                      src={photo2}
+                      alt={`${item.title} - View 02`}
+                      plateNumber="02"
+                    />
                   </div>
 
                   {/* Shoot Diptych Hover Lens Badge */}

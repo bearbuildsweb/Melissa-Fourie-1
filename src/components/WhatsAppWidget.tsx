@@ -24,7 +24,15 @@ export const WhatsAppWidget: React.FC<WhatsAppWidgetProps> = ({ customMessage, i
       // Show widget once the start/top edge of the portfolio section enters view
       const reachedPortfolio = rect.top <= windowHeight * 0.7;
 
-      setIsVisible(reachedPortfolio);
+      // Hide widget when the user reaches the footer section
+      const footer = document.getElementById('editorial-footer') || document.querySelector('footer');
+      let reachedFooter = false;
+      if (footer) {
+        const footerRect = footer.getBoundingClientRect();
+        reachedFooter = footerRect.top <= windowHeight;
+      }
+
+      setIsVisible(reachedPortfolio && !reachedFooter);
     };
 
     checkScrollPosition();

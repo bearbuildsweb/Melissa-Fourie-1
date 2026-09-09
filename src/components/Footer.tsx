@@ -51,8 +51,6 @@ export const Footer: React.FC = () => {
 
           {/* Editorial Caption / Brand Subtitle */}
           <div className="mt-8 sm:mt-9 flex items-center justify-center space-x-2.5 sm:space-x-3 text-[9.5px] sm:text-[11px] tracking-[0.32em] uppercase text-[#A89893] font-light">
-            <span>HAIR & MAKEUP ARTISTRY</span>
-            <span className="text-[#C29A3A]">•</span>
             <span>CAPETOWN</span>
             <span className="text-[#C29A3A]">•</span>
             <span>WORLDWIDE</span>
@@ -120,8 +118,7 @@ export const Footer: React.FC = () => {
               fontWeight="300"
               letterSpacing="0.22em"
               fill="#F2ECE6"
-              fillOpacity="0.06"
-              className="uppercase"
+              className="uppercase opacity-[0.14] sm:opacity-[0.06] transition-opacity duration-300"
             >
               MELISSA FOURIE
             </text>
