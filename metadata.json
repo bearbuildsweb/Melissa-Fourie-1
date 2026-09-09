@@ -1,0 +1,8 @@
+{
+  "name": "Melissa Fourie Makeup",
+  "description": "Luxury hair and makeup artistry in Cape Town for weddings, editorials and life’s most memorable moments.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
